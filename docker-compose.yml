@@ -3,7 +3,7 @@ version: '3.6'
 services:
 
   elasticsearch1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
     container_name: elasticsearch1
     hostname: elasticsearch1
     restart: unless-stopped
@@ -21,9 +21,9 @@ services:
       - "node.name=elasticsearch1"
       - "bootstrap.memory_lock=true"
       - "cluster.name=es-cluster"
-      - "discovery.seed_hosts=elasticsearch2,elasticsearch3,elasticsearch1"
-      - "cluster.initial_master_nodes=elasticsearch2,elasticsearch3,elasticsearch1"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0 -Des.enforce.bootstrap.checks=true"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch2,elasticsearch3"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0"
       - "xpack.security.enabled=false"
       - "xpack.security.http.ssl.enabled=false"
       - "xpack.security.transport.ssl.enabled=false"
@@ -47,7 +47,7 @@ services:
           memory: 1500m
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
     container_name: elasticsearch2
     hostname: elasticsearch2
     restart: unless-stopped
@@ -65,9 +65,9 @@ services:
       - "node.name=elasticsearch2"
       - "bootstrap.memory_lock=true"
       - "cluster.name=es-cluster"
-      - "discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3"
-      - "cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0 -Des.enforce.bootstrap.checks=true"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch3"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0"
       - "xpack.security.enabled=false"
       - "xpack.security.http.ssl.enabled=false"
       - "xpack.security.transport.ssl.enabled=false"
@@ -91,7 +91,7 @@ services:
           memory: 1500m
 
   elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
     container_name: elasticsearch3
     hostname: elasticsearch3
     restart: unless-stopped
@@ -109,9 +109,9 @@ services:
       - "node.name=elasticsearch3"
       - "bootstrap.memory_lock=true"
       - "cluster.name=es-cluster"
-      - "discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3"
-      - "cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3"
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0 -Des.enforce.bootstrap.checks=true"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.index.number_of_replicas=0"
       - "xpack.security.enabled=false"
       - "xpack.security.http.ssl.enabled=false"
       - "xpack.security.transport.ssl.enabled=false"
@@ -135,7 +135,7 @@ services:
           memory: 1500m
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.6.2
+    image: docker.elastic.co/kibana/kibana:6.8.1
     container_name: kibana
     restart: unless-stopped
     environment:
